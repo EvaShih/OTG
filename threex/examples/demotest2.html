@@ -15,13 +15,14 @@ require([ '../package.require.js'
 		antialiasing	: true
 	});
 	renderer.shadowMapEnabled	= true
+	renderer.setClearColor(0xefeae4);
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( renderer.domElement );
 
 	var onRenderFcts= [];
 	var scene	= new THREE.Scene();
 	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 10000)
-	camera.position.z = 200
+	camera.position.z = 250
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		set 3 point lighting						//
@@ -118,12 +119,12 @@ require([ '../package.require.js'
 		return mesh
 	}
 	
-	var sky = createSky()
-	sky.scale.multiplyScalar(10)
-	scene.add(sky)
+	//var sky = createSky()
+	//sky.scale.multiplyScalar(10)
+	//scene.add(sky)
 
 	var material	= new THREE.MeshPhongMaterial({
-		color	: 'cyan'
+		color	: 0xbadb73
 	});
 
 	// var material	= new THREE.MeshNormalMaterial()
@@ -132,7 +133,7 @@ require([ '../package.require.js'
 	stepMesh.receiveShadow	= true
 	stepMesh.position.y	= -geometry.height/2
 
-	for(var i = 0; i < 10; i++ ){
+	/*for(var i = 0; i < 5; i++ ){
 		(function(){
 			var mesh	= stepMesh.clone()
 			mesh.position.y	+= ((10-i)/10)*50
@@ -141,7 +142,15 @@ require([ '../package.require.js'
 			var stepBody	= THREEx.Oimo.createBodyFromMesh(world, mesh, false)
 			scene.add(mesh)
 		})()
-	}
+	}*/
+
+	var i = 10;
+	var mesh	= stepMesh.clone()
+	mesh.position.y	+= ((10-i)/10)*50
+	mesh.scale.x	*= (i+0.5)
+	mesh.scale.z	*= (i+0.5)
+	var stepBody	= THREEx.Oimo.createBodyFromMesh(world, mesh, false)
+	scene.add(mesh)
 	
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -232,18 +241,19 @@ for(var i = 0; i < 500; i++ ){
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Camera Controls							//
 	//////////////////////////////////////////////////////////////////////////////////
-	// var mouse	= {x : 0, y : 0}
-	// document.addEventListener('mousemove', function(event){
-	// 	mouse.x	= (event.clientX / window.innerWidth ) - 0.5
-	// 	mouse.y	= (event.clientY / window.innerHeight) - 0.5
-	// }, false)
-	// onRenderFcts.push(function(delta, now){
-	// 	camera.position.x += (mouse.x*200 - camera.position.x) * (delta*3)
-	// 	camera.position.y += (mouse.y*200 - (camera.position.y - 5)) * (delta*3)
-	// 	camera.lookAt( scene.position )
-	// })
-
+	var mouse	= {x : 0, y : 0}
+	document.addEventListener('mousemove', function(event){
+		mouse.x	= (event.clientX / window.innerWidth ) - 0.5
+		mouse.y	= (event.clientY / window.innerHeight) - 0.5
+	}, false)
 	onRenderFcts.push(function(delta, now){
+		//camera.position.x += (mouse.x*200 - camera.position.x) * (delta*3)
+		//camera.position.y += (mouse.y*200 - (camera.position.y - 5)) * (delta*3)
+		camera.position.y = 80;
+		camera.lookAt( scene.position )
+	})
+
+	/*onRenderFcts.push(function(delta, now){
 		// var angle	= now*Math.PI*2 * 0.1
 		// var radius	= 150 + Math.cos(angle*2)*50
 		// camera.position.x	= Math.cos(angle)*radius
@@ -258,7 +268,7 @@ for(var i = 0; i < 500; i++ ){
 		
 		var target	= new THREE.Vector3(0,40,0)
 		camera.lookAt( target )
-	})
+	})*/
 
 
 	//////////////////////////////////////////////////////////////////////////////////
