@@ -1,4 +1,4 @@
 OTG
 ===
 
-one true god based swag
+Wildhacks Project
